@@ -10,12 +10,14 @@ def test_calculate_total_price():
     result = item.calculate_total_price()
     assert result == expected_total_price
 
+
 def test_apply_discount():
     item = Item("Тестовый товар", 50.0, 1)
     item.apply_discount()
     expected_price = 50.0
     result = item.price
     assert result == expected_price
+
 
 def test_string_to_number():
     number_str = "15.75"

@@ -8,6 +8,7 @@ class Item:
     pay_rate = 1.0
     all = []
 
+
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
         Создание экземпляра класса item.
@@ -22,15 +23,20 @@ class Item:
         Item.all.append(self)
 
     @property
+
+
     def name(self):
         return self.__name
 
     @name.setter
+
+
     def name(self, name):
         if len(name) > 10:
             name = name[:10]
         else:
             self.__name = name
+
 
     def calculate_total_price(self) -> float:
         """
@@ -40,6 +46,7 @@ class Item:
         """
         total_price = self.price * self.quantity
         return total_price
+
 
     def apply_discount(self) -> float:
         """
@@ -53,13 +60,16 @@ class Item:
         """
         Инициализирует экземпляры класса Item данными из CSV файла.
         """
-        with open('../src/items.csv', newline='', encoding='utf-8-sig') as file:
+        with open('../src/items.csv', newline='',
+            encoding='utf-8-sig') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 print(row['name'], row['price'], row['quantity'])
                 cls(row['name'], row['price'], row['quantity'])
 
     @staticmethod
+
+
     def string_to_number(string):
         """Преобразует строку в число."""
         return float(string)
