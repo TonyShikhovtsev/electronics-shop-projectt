@@ -22,6 +22,9 @@ class Item:
         self.quantity = quantity
         Item.all.append(self)
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}{self.__name}, {self.price},{self.quantity}'
+
     @property
 
 
@@ -73,3 +76,11 @@ class Item:
     def string_to_number(string):
         """Преобразует строку в число."""
         return float(string)
+
+
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return self.name

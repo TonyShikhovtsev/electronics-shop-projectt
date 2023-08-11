@@ -29,3 +29,11 @@ def test_name_getter_and_setter():
     item = Item("Test Item", 10.0, 5)
     assert item.name == "Test Item"
 
+
+def test_repr():
+    item = Item("Смартфон", 10000, 20)
+    assert repr(item) == "Item('Смартфон', 10000, 20)"
+
+def test_str():
+    item = Item("Смартфон", 10000, 20)
+    assert str(item) == "Смартфон"
