@@ -2,6 +2,7 @@
 import pytest
 import csv
 from src.item import Item
+from src.phone import Phone
 
 
 def test_calculate_total_price():
@@ -37,3 +38,25 @@ def test_repr():
 def test_str():
     item = Item("Смартфон", 10000, 20)
     assert str(item) == "Смартфон"
+
+
+def test_phone_creation():
+    phone = Phone("Phone Model", 1000, 10, 2)
+    assert phone.name == "Phone Model"
+    assert phone.price == 1000
+    assert phone.quantity == 10
+    assert phone.sim_slots == 2
+
+
+def test_phone_addition_with_item():
+    phone = Phone("Phone Model", 1000, 10, 2)
+    item = Item("Item Model", 500, 5)
+    result = phone + item
+    assert result == 15
+
+
+def test_phone_addition_with_phone():
+    phone1 = Phone("Phone Model 1", 1000, 10, 2)
+    phone2 = Phone("Phone Model 2", 1200, 8, 1)
+    result = phone1 + phone2
+    assert result == 18

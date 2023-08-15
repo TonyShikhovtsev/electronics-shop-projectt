@@ -1,4 +1,4 @@
-from item import Item
+from src.item import Item
 
 class Phone(Item):
     def __init__(self, name, price,quantity, sim_slots):
@@ -10,4 +10,8 @@ class Phone(Item):
             return self.quantity + other.quantity
         else:
             raise ValueError("Ошибка")
+
+
+    def __radd__(self, other):
+        return self.__add__(other)
 
