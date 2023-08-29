@@ -1,4 +1,33 @@
 import csv
+import os
+
+
+class InstantiateCSVError(Exception):
+    def __init__(self, message="Файл item.csv поврежден"):
+        self.message = message
+        super().__init__(self.message)
+
+
+@classmethod
+def instantiate_from_csv(cls, filename=None):
+    """
+    Инициализирует экземпляры класса Item данными из CSV файла.
+    """
+    if filename is None:
+        script_location = os.path.abspath(os.path.dirname(__file__))
+        filename = os.path.join(script_location, '../src/items.csv')
+
+    try:
+        with open(filename, newline='') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['name'] == '' or row['price'] == '' or row['quantity'] == '':
+                    raise InstantiateCSVError("Файл item.csv поврежден")
+                cls(row['name'], row['price'], row['quantity'])
+    except FileNotFoundError:
+        print(f'FileNotFoundError: Отсутствует файл {filename}')
+
+
 
 
 class Item:

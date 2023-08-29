@@ -1,8 +1,10 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 import pytest
 import csv
-from src.item import Item
+from src.item import Item, instantiate_from_csv, InstantiateCSVError
 from src.phone import Phone
+
+
 
 
 def test_calculate_total_price():
@@ -60,3 +62,16 @@ def test_phone_addition_with_phone():
     phone2 = Phone("Phone Model 2", 1200, 8, 1)
     result = phone1 + phone2
     assert result == 18
+
+
+def test_item_instantiate_from_csv():
+    Item.instantiate_from_csv()
+    assert len(Item.all) == 5
+    item_data = Item.all[0]
+    assert item_data.name == 'Компьютер'
+    assert int(item_data.price) == 100
+    assert int(item_data.quantity) == 1
+
+
+
+
