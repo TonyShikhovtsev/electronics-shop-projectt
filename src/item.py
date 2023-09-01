@@ -8,25 +8,27 @@ class InstantiateCSVError(Exception):
         super().__init__(self.message)
 
 
-@classmethod
-def instantiate_from_csv(cls, filename=None):
-    """
-    Инициализирует экземпляры класса Item данными из CSV файла.
-    """
-    if filename is None:
+    @classmethod
+    def instantiate_from_csv(cls, name):
+        """
+        Инициализирует экземпляры класса Item данными из CSV файла.
+        """
         script_location = os.path.abspath(os.path.dirname(__file__))
         filename = os.path.join(script_location, '../src/items.csv')
-
-    try:
-        with open(filename, newline='') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['name'] == '' or row['price'] == '' or row['quantity'] == '':
-                    raise InstantiateCSVError("Файл item.csv поврежден")
-                cls(row['name'], row['price'], row['quantity'])
-    except FileNotFoundError:
-        print(f'FileNotFoundError: Отсутствует файл {filename}')
-
+        try:
+            with open(filename, newline='') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    try:
+                        list_item = cls(row['name'], row['price'], row['quantity'])
+                        Item.all.append(list_item)
+                        if row['name'] == '' or row['price'] == '' or row['quantity'] == '':
+                            raise InstantiateCSVError
+                    except InstantiateCSVError as ex:
+                        print(ex.message)
+                    Item.all.append(list_item)
+        except FileNotFoundError:
+            print(f'FileNotFoundError: Отсутствует файл {filename}')
 
 
 
@@ -36,6 +38,7 @@ class Item:
     """
     pay_rate = 1.0
     all = []
+
 
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
@@ -119,5 +122,3 @@ class Item:
             return self.quantity + other.quantity
         else:
             raise TypeError("Ошибка")
-
-
