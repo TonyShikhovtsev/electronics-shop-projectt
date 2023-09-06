@@ -77,7 +77,7 @@ def test_item_instantiate_from_csv_raises():
         Item.instantiate_from_csv()
 
     with pytest.raises(Item.InstantiateCSVError):
-        raise Item.InstantiateCSVError
+        Item.InstantiateCSVError
 
 
 

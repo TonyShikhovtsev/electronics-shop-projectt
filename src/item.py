@@ -3,32 +3,14 @@ import os
 
 
 class InstantiateCSVError(Exception):
-    def __init__(self, message="Файл item.csv поврежден"):
-        self.message = message
-        super().__init__(self.message)
+
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else '_Файл item.csv поврежден_'
+
+    def __str__(self):
+        return self.message
 
 
-    @classmethod
-    def instantiate_from_csv(cls, name):
-        """
-        Инициализирует экземпляры класса Item данными из CSV файла.
-        """
-        script_location = os.path.abspath(os.path.dirname(__file__))
-        filename = os.path.join(script_location, '../src/items.csv')
-        try:
-            with open(filename, newline='') as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    try:
-                        list_item = cls(row['name'], row['price'], row['quantity'])
-                        Item.all.append(list_item)
-                        if row['name'] == '' or row['price'] == '' or row['quantity'] == '':
-                            raise InstantiateCSVError
-                    except InstantiateCSVError as ex:
-                        print(ex.message)
-                    Item.all.append(list_item)
-        except FileNotFoundError:
-            print(f'FileNotFoundError: Отсутствует файл {filename}')
 
 
 
@@ -122,3 +104,27 @@ class Item:
             return self.quantity + other.quantity
         else:
             raise TypeError("Ошибка")
+
+    @classmethod
+    def instantiate_from_csv(cls, file_name='../src/items.csv'):
+        """
+        Инициализирует экземпляры класса Item данными из CSV файла.
+        """
+
+        try:
+            with open(file_name, newline='',
+                      encoding='utf-8-sig') as file:
+
+                reader = csv.DictReader(file)
+                for row in reader:
+                    try:
+                        list_item = cls(row["name"], row["price"], row["quantity"])
+                        if row["quantity"] == None or row["price"] == None or row["name"] == None:
+                            raise InstantiateCSVError
+                    except InstantiateCSVError as ex:
+                        print(ex)
+                        raise
+                    cls.all.append(list_item)
+        except FileNotFoundError:
+            print(f"Отсутствует файл {file_name}")
+            raise
